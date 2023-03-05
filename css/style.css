@@ -21,11 +21,13 @@
 }
 
 .tempo {
+	margin: 0;
 	height: auto !important;
-	width: 49% !important;
+	width: 30% !important;
+	text-align: end;
 }
 .tap {
-	width: 49% !important;
+	width: 68% !important;
 }
 
 * {
