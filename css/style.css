@@ -1,0 +1,33 @@
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+	content: "";
+	clear: both;
+	display: table;
+}
+
+.btn-group button, .btn-group input {
+	color: white; /* White text */
+	margin: 0.5%;
+	float: left !important; /* Float the buttons side by side */
+	font-size: 3em;
+}
+
+.prev,
+.next {
+	width: 30%;
+}
+.play {
+	width: 37%;
+}
+
+.tempo {
+	height: auto !important;
+	width: 49% !important;
+}
+.tap {
+	width: 49% !important;
+}
+
+* {
+	touch-action: manipulation;
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>VilaTronomo</title>
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.fluid.classless.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <header>
+    <nav>
+      <span class="btn-group">
+        <input class="tempo" id="tempo" type="number" value="120" onchange="setTempo(this.value);">
+        <button class="tap" onclick="taptempo();">TAP</button>
+      </span>
+    </nav>
+    <span class="btn-group">
+      <button class="prev" onclick="">&#x23ee;</button>
+      <button class="next" onclick="">&#x23ed;</button>
+      <button class="play" onclick="startStop();">&#x23ef;</button>
+    </span>
+  </main>
+</body>
+<script src="js/metronome.js"></script>
+</html>
