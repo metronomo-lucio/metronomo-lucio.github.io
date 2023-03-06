@@ -1,13 +1,13 @@
-/* Clear floats (clearfix hack) */
 .btn-group:after {
 	content: "";
 	clear: both;
 	display: table;
 }
 
-.btn-group button, .btn-group input {
+.btn-group button,
+.btn-group input {
 	margin: 0.2%;
-	float: left !important; /* Float the buttons side by side */
+	float: left !important;
 	font-size: 3em;
 }
 
@@ -17,21 +17,25 @@ p {
 	font-weight: bolder;
 	text-align: center;
 	margin-bottom: 0px !important;
+	color: white;
 }
 
 .prev,
 .next {
 	width: 30%;
 }
+
 .play {
 	width: 38.8%;
 }
 
 .tempo {
+	color: white;
 	height: auto !important;
 	width: 30% !important;
 	text-align: end;
 }
+
 .tap {
 	width: 69.2% !important;
 }
@@ -39,10 +43,12 @@ p {
 * {
 	touch-action: manipulation;
 }
-body, table { 
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+
+body,
+table {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 	overflow-x: hidden;
 }
 
@@ -53,7 +59,7 @@ td {
 }
 
 .sticky {
-    position: sticky;
-    top: 0;
+	position: sticky;
+	top: 0;
 	background-color: black;
 }

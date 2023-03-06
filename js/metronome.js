@@ -1,3 +1,4 @@
+const listURL = 'data/list.json';
 const maxTempo = 250;
 const minTempo = 50;
 const noteLength = 0.07;
@@ -89,17 +90,21 @@ function init() {
     timerWorker.onmessage = function (e) {
         scheduler();
     };
-    loadSongList();
+    fetchSongList();
 }
 
-async function loadSongList() {
-    songList = (await (await fetch('data/list.json')).json());
+async function fetchSongList() {
+    loadSongList(await (await fetch(listURL)).json());
+}
+
+function loadSongList(songs) {
+    songList = songs;
     songList.forEach((song, index) => {
         let row = songTable.insertRow();
         row.insertCell(0).innerText = index + 1;
         row.insertCell(1).innerText = song.name;
         row.insertCell(2).innerText = song.tempo;
-        row.onclick = function(){
+        row.onclick = function () {
             currentSong = index;
             loadCurrentSong();
         }
@@ -108,10 +113,10 @@ async function loadSongList() {
     loadCurrentSong();
 }
 
-function loadCurrentSong(){
+function loadCurrentSong() {
     let song = songList[currentSong];
     setTempo(song.tempo);
-    songName.innerText = (currentSong + 1) + ' - ' + song.name;
+    songName.innerText = (currentSong + 1) + ': ' + song.name;
 }
 
 function next() {
@@ -121,6 +126,6 @@ function next() {
 }
 
 function prev() {
-    currentSong = currentSong === 0 ? songList.length -1 : --currentSong;
+    currentSong = currentSong === 0 ? songList.length - 1 : --currentSong;
     loadCurrentSong();
 }
