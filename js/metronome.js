@@ -1,10 +1,10 @@
 const listURL = 'data/list.json';
 const maxTempo = 250;
 const minTempo = 50;
-const noteLength = 0.07;
+const noteLength = 0.075;
 const oscilatorType = 'square';
-const pitchBeatOne = 1100;
-const pitchBeats = 840;
+const beatPitch = 833;
+const playStop = document.getElementById('playStop');
 const scheduleAheadTime = 0.1;
 const songName = document.getElementById('songName');
 const songTable = document.getElementById('songsTable');
@@ -30,7 +30,7 @@ function scheduleBeat() {
     let osc = audioContext.createOscillator();
     osc.type = oscilatorType;
     osc.connect(audioContext.destination);
-    osc.frequency.value = currentBeat === 0 ? pitchBeatOne : pitchBeats;
+    osc.frequency.value = beatPitch;
     osc.start(nextNoteTime);
     osc.stop(nextNoteTime + noteLength);
 }
@@ -60,6 +60,14 @@ function startStop() {
     }
     timerWorker.postMessage({ 'action': msg });
     isPlaying = !isPlaying;
+    playStop.innerHTML = isPlaying ? '&#x23f8;': '&#x23f5;';
+    if (isPlaying) {
+        playStop.classList.remove('stopped');
+        playStop.classList.add('playing');
+    } else {
+        playStop.classList.remove('playing');
+        playStop.classList.add('stopped');
+    }
 }
 
 function limitTempo(value) {
@@ -119,13 +127,12 @@ function loadCurrentSong() {
     songName.innerText = (currentSong + 1) + ': ' + song.name;
 }
 
-function next() {
-    currentSong++;
-    currentSong = currentSong === songList.length ? 0 : currentSong;
-    loadCurrentSong();
-}
-
-function prev() {
-    currentSong = currentSong === 0 ? songList.length - 1 : --currentSong;
+function prevNext(next) {
+    currentSong = currentSong + (next ? 1 : -1);
+    len = songList.length;
+    if (currentSong === -1)
+        currentSong = len - 1;
+    else if (currentSong === len)
+        currentSong = 0;
     loadCurrentSong();
 }

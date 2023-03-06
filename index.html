@@ -21,9 +21,9 @@
       <button class="tap" onclick="taptempo();">TAP</button>
     </span>
     <span class="btn-group">
-      <button class="prev" onclick="prev();">&#x23ee;</button>
-      <button class="next" onclick="next();">&#x23ed;</button>
-      <button class="play" onclick="startStop();">&#x23ef;</button>
+      <button class="prev" onclick="prevNext(false);">&#x23ee;</button>
+      <button class="next" onclick="prevNext(true);">&#x23ed;</button>
+      <button id="playStop" class="play stopped" onclick="startStop();">&#x23f5;</button>
     </span>
     <p id="songName"></p>
     <hr>

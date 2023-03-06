@@ -6,9 +6,10 @@
 
 .btn-group button,
 .btn-group input {
-	margin: 0.2%;
+	margin: 1%;
 	float: left !important;
 	font-size: 3em;
+	border-radius: 0.3em;
 }
 
 p {
@@ -26,7 +27,15 @@ p {
 }
 
 .play {
-	width: 38.8%;
+	width: 34%;
+}
+
+.stopped {
+	background-color: #006400 !important;
+}
+
+.playing {
+	background-color: #b22222 !important;
 }
 
 .tempo {
@@ -37,7 +46,7 @@ p {
 }
 
 .tap {
-	width: 69.2% !important;
+	width: 66% !important;
 }
 
 * {
