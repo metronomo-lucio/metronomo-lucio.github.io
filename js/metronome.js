@@ -1,36 +1,35 @@
-const firstNotePitch = 1100;
 const maxTempo = 250;
 const minTempo = 50;
-const noteLength = 0.05;
+const noteLength = 0.07;
 const oscilatorType = 'square';
-const otherNotePitch = 833;
+const pitchBeatOne = 1100;
+const pitchBeats = 840;
 const scheduleAheadTime = 0.1;
+const songName = document.getElementById('songName');
+const songTable = document.getElementById('songsTable');
 const tempo = document.getElementById('tempo');
 const timerWorker = new Worker("js/worker.js");
 let audioContext = null;
 let avgTap = 0;
 let currentBeat = 0;
+let currentSong = null;
 let isPlaying = false;
 let nextNoteTime = 0.0;
 let prevTapTime = 0;
-
-
-timerWorker.onmessage = function (e) {
-    scheduler();
-};
+let songList = [];
 
 function scheduler() {
     while (nextNoteTime < audioContext.currentTime + scheduleAheadTime) {
-        scheduleOscilator();
+        scheduleBeat();
         increaseBeat();
     }
 }
 
-function scheduleOscilator() {
+function scheduleBeat() {
     let osc = audioContext.createOscillator();
     osc.type = oscilatorType;
     osc.connect(audioContext.destination);
-    osc.frequency.value = currentBeat === 0 ? firstNotePitch : otherNotePitch;
+    osc.frequency.value = currentBeat === 0 ? pitchBeatOne : pitchBeats;
     osc.start(nextNoteTime);
     osc.stop(nextNoteTime + noteLength);
 }
@@ -63,7 +62,7 @@ function startStop() {
 }
 
 function limitTempo(value) {
-    return value < minTempo ? minTempo : value > maxTempo ? maxTempo : Number(value).toFixed(1);
+    return value < minTempo ? minTempo : value > maxTempo ? maxTempo : Number(value).toFixed(0);
 }
 
 function getTempo() {
@@ -84,4 +83,44 @@ function taptempo() {
     avgTap = (avgTap + (60 / (now - prevTapTime))) / 2;
     prevTapTime = now;
     setTempo(avgTap);
+}
+
+function init() {
+    timerWorker.onmessage = function (e) {
+        scheduler();
+    };
+    loadSongList();
+}
+
+async function loadSongList() {
+    songList = (await (await fetch('data/list.json')).json());
+    songList.forEach((song, index) => {
+        let row = songTable.insertRow();
+        row.insertCell(0).innerText = index + 1;
+        row.insertCell(1).innerText = song.name;
+        row.insertCell(2).innerText = song.tempo;
+        row.onclick = function(){
+            currentSong = index;
+            loadCurrentSong();
+        }
+    });
+    currentSong = 0;
+    loadCurrentSong();
+}
+
+function loadCurrentSong(){
+    let song = songList[currentSong];
+    setTempo(song.tempo);
+    songName.innerText = (currentSong + 1) + ' - ' + song.name;
+}
+
+function next() {
+    currentSong++;
+    currentSong = currentSong === songList.length ? 0 : currentSong;
+    loadCurrentSong();
+}
+
+function prev() {
+    currentSong = currentSong === 0 ? songList.length -1 : --currentSong;
+    loadCurrentSong();
 }

@@ -1,0 +1,17 @@
+{
+    "name": "VilaTronomo",
+    "short_name": "VilaTronomo",
+    "start_url": "index.html",
+    "id": "index.html",
+    "display": "standalone",
+    "background_color": "#808080",
+    "theme_color": "#5380f4",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "/icons/icon.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ]
+}
