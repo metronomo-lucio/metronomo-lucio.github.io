@@ -1,26 +1,62 @@
 [
     {
-        "name": "Verte Asi",
-        "tempo": 140
-    },
-    {
-        "name": "Que se yo que hacer",
-        "tempo": 140
-    },
-    {
-        "name": "El Payaso",
-        "tempo": 120
-    },
-    {
-        "name": "Macumba",
-        "tempo": 95
-    },
-    {
-        "name": "Tira para Arriba",
+        "name": "Bombachitas Rosas",
         "tempo": 130
     },
     {
-        "name": "Pampa - Ramon",
+        "name": "Verte Así",
+        "tempo": 140
+    },
+    {
+        "name": "El Probador",
+        "tempo": 152
+    },
+    {
+        "name": "En la Calle",
+        "tempo": 150
+    },
+    {
+        "name": "Vine hasta aquí",
+        "tempo": 130
+    },
+    {
+        "name": "Que se yo qué hacer",
+        "tempo": 138
+    },
+    {
+        "name": "Yo Caníbal",
+        "tempo": 157
+    },
+    {
+        "name": "Tan Solo",
+        "tempo": 96
+    },
+    {
+        "name": "Tira para arriba",
+        "tempo": 130
+    },
+    {
+        "name": "Bailando al cielo",
+        "tempo": 145
+    },
+    {
+        "name": "Lunes por la madrugada",
+        "tempo": 152
+    },
+    {
+        "name": "Muchachos",
+        "tempo": 120
+    },
+    {
+        "name": "Pampa.Ramon",
         "tempo": 156
+    },
+    {
+        "name": "Sabor a danza",
+        "tempo": 150
+    },
+    {
+        "name": "La Bolsa",
+        "tempo": 165
     }
 ]
