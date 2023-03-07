@@ -21,13 +21,16 @@ p {
 	color: white;
 }
 
-.prev,
+.prev {
+	width: 20% !important;
+}
+
 .next {
-	width: 30%;
+	width: 54% !important;
 }
 
 .play {
-	width: 34%;
+	width: 20% !important;
 }
 
 .stopped {
@@ -41,12 +44,12 @@ p {
 .tempo {
 	color: white;
 	height: auto !important;
-	width: 30% !important;
+	width: 36% !important;
 	text-align: end;
 }
 
 .tap {
-	width: 66% !important;
+	width: 60% !important;
 }
 
 * {
