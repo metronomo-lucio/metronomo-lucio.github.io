@@ -1,15 +1,14 @@
 const listURL = 'data/list.json';
 const maxTempo = 250;
 const minTempo = 50;
-const noteLength = 0.075;
-const oscilatorType = 'square';
-const beatPitch = 833;
+const playIcon = document.getElementById('playIcon');
 const playStop = document.getElementById('playStop');
 const scheduleAheadTime = 0.1;
 const songName = document.getElementById('songName');
 const songTable = document.getElementById('songsTable');
 const tempo = document.getElementById('tempo');
 const timerWorker = new Worker("js/worker.js");
+let audioBuffer = null;
 let audioContext = null;
 let avgTap = 0;
 let currentBeat = 0;
@@ -19,6 +18,13 @@ let nextNoteTime = 0.0;
 let prevTapTime = 0;
 let songList = [];
 
+
+timerWorker.onmessage = function (e) {
+    scheduler();
+};
+
+fetchSongList();
+
 function scheduler() {
     while (nextNoteTime < audioContext.currentTime + scheduleAheadTime) {
         scheduleBeat();
@@ -27,12 +33,10 @@ function scheduler() {
 }
 
 function scheduleBeat() {
-    let osc = audioContext.createOscillator();
-    osc.type = oscilatorType;
-    osc.connect(audioContext.destination);
-    osc.frequency.value = beatPitch;
-    osc.start(nextNoteTime);
-    osc.stop(nextNoteTime + noteLength);
+    let source = audioContext.createBufferSource();
+    source.buffer = audioBuffer;
+    source.connect(audioContext.destination);
+    source.start(nextNoteTime);
 }
 
 function increaseBeat() {
@@ -40,7 +44,7 @@ function increaseBeat() {
     currentBeat = currentBeat === 3 ? 0 : ++currentBeat;
 }
 
-function initAudio() {
+async function initAudio() {
     if (audioContext)
         return
     audioContext = new window.AudioContext();
@@ -48,6 +52,7 @@ function initAudio() {
     node.buffer = audioContext.createBuffer(1, 1, 22050);;
     node.connect(audioContext.destination);
     node.start(0);
+    audioBuffer =  await fetch('sounds/b.mp3').then(res => res.arrayBuffer()).then(buffer => audioContext.decodeAudioData(buffer));
 }
 
 function startStop() {
@@ -60,13 +65,16 @@ function startStop() {
     }
     timerWorker.postMessage({ 'action': msg });
     isPlaying = !isPlaying;
-    playStop.innerHTML = isPlaying ? '&#x23f8;': '&#x23f5;';
     if (isPlaying) {
         playStop.classList.remove('stopped');
         playStop.classList.add('playing');
+        playIcon.classList.remove('fa-play');
+        playIcon.classList.add('fa-stop');
     } else {
         playStop.classList.remove('playing');
         playStop.classList.add('stopped');
+        playIcon.classList.remove('fa-stop');
+        playIcon.classList.add('fa-play');
     }
 }
 
@@ -92,13 +100,6 @@ function taptempo() {
     avgTap = (avgTap + (60 / (now - prevTapTime))) / 2;
     prevTapTime = now;
     setTempo(avgTap);
-}
-
-function init() {
-    timerWorker.onmessage = function (e) {
-        scheduler();
-    };
-    fetchSongList();
 }
 
 async function fetchSongList() {

@@ -12,18 +12,19 @@
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/pico.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/icons.css">
 </head>
 
-<body onload="init()">
+<body>
   <div class="sticky">
     <span class="btn-group">
       <input class="tempo" id="tempo" type="number" value="120" onchange="setTempo(this.value);">
       <button class="tap" onclick="taptempo();">TAP</button>
     </span>
     <span class="btn-group">
-      <button class="prev" onclick="prevNext(false);">&#x23ee;</button>
-      <button class="next" onclick="prevNext(true);">&#x23ed;</button>
-      <button id="playStop" class="play stopped" onclick="startStop();">&#x23f5;</button>
+      <button class="prev" onclick="prevNext(false);"><i class="fa fa-step-backward"></i></button>
+      <button class="next" onclick="prevNext(true);"><i class="fa fa-step-forward"></i></button>
+      <button id="playStop" class="play stopped" onclick="startStop();"><i id="playIcon" class="fa fa-play"></i></button>
     </span>
     <p id="songName"></p>
     <hr>
