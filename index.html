@@ -24,7 +24,9 @@
     <span class="btn-group">
       <button class="prev" onclick="prevNext(false);"><i class="fa fa-step-backward"></i></button>
       <button class="next" onclick="prevNext(true);"><i class="fa fa-step-forward"></i></button>
-      <button id="playStop" class="play stopped" onclick="startStop();"><i id="playIcon" class="fa fa-play"></i></button>
+      <button id="playStop" class="playStop play" onclick="startStop();">
+        <i id="playIcon" class="fa fa-play"></i>
+      </button>
     </span>
     <p id="songName"></p>
     <hr>

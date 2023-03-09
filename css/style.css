@@ -1,77 +1,77 @@
 .btn-group:after {
-	content: "";
-	clear: both;
-	display: table;
+  content: "";
+  clear: both;
+  display: table;
 }
 
 .btn-group button,
 .btn-group input {
-	margin: 1%;
-	float: left !important;
-	font-size: 3em;
-	border-radius: 0.3em;
+  margin: 1%;
+  float: left !important;
+  font-size: 3em;
+  border-radius: 0.3em;
 }
 
 p {
-	width: 100%;
-	font-size: 3em;
-	font-weight: bolder;
-	text-align: center;
-	margin-bottom: 0px !important;
-	color: white;
+  width: 100%;
+  font-size: 3em;
+  font-weight: bolder;
+  text-align: center;
+  margin-bottom: 0px !important;
+  color: white;
 }
 
 .prev {
-	width: 20% !important;
+  width: 20% !important;
 }
 
 .next {
-	width: 54% !important;
+  width: 54% !important;
+}
+
+.playStop {
+  width: 20% !important;
 }
 
 .play {
-	width: 20% !important;
+  background-color: #006400 !important;
 }
 
-.stopped {
-	background-color: #006400 !important;
-}
-
-.playing {
-	background-color: #b22222 !important;
+.stop {
+  background-color: #b22222 !important;
 }
 
 .tempo {
-	color: white;
-	height: auto !important;
-	width: 36% !important;
-	text-align: end;
+  color: white;
+  height: auto !important;
+  width: 36% !important;
+  text-align: end;
 }
 
 .tap {
-	width: 60% !important;
+  width: 60% !important;
 }
 
 * {
-	touch-action: manipulation;
+  touch-action: manipulation;
 }
 
 body,
 table {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-	overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 td {
-	font-size: 2em;
-	padding-top: 0.6em;
-	padding-bottom: 0.6em;
+  font-size: 2em;
+  padding-top: 0.6em;
+  padding-bottom: 0.6em;
 }
 
 .sticky {
-	position: sticky;
-	top: 0;
-	background-color: black;
+  position: sticky;
+  top: 0;
+  background-color: black;
 }

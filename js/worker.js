@@ -2,8 +2,10 @@ const interval = 25;
 let timerID = null;
 self.onmessage = function(e) {
 	switch (e.data.action) {
-		case 'start':
-			timerID = setInterval(function () {postMessage("tick")}, interval)
+		case 'play':
+			timerID = setInterval(function () {
+				postMessage(0)
+			}, interval)
 			break;
 		case 'stop':
 			clearInterval(timerID);

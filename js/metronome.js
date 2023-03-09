@@ -1,3 +1,4 @@
+const beepURL = 'sounds/b.mp3';
 const listURL = 'data/list.json';
 const maxTempo = 250;
 const minTempo = 50;
@@ -10,72 +11,60 @@ const tempo = document.getElementById('tempo');
 const timerWorker = new Worker("js/worker.js");
 let audioBuffer = null;
 let audioContext = null;
-let avgTap = 0;
-let currentBeat = 0;
-let currentSong = null;
+let avgTap = 0.0;
+let currentSong = -1;
 let isPlaying = false;
 let nextNoteTime = 0.0;
-let prevTapTime = 0;
+let prevTapTime = 0.0;
 let songList = [];
 
 
 timerWorker.onmessage = function (e) {
-    scheduler();
+    schedule();
 };
 
 fetchSongList();
 
-function scheduler() {
-    while (nextNoteTime < audioContext.currentTime + scheduleAheadTime) {
-        scheduleBeat();
-        increaseBeat();
-    }
+function schedule() {
+    while (nextNoteTime < audioContext.currentTime + scheduleAheadTime)
+        beepAndSchedule();
 }
 
-function scheduleBeat() {
-    let source = audioContext.createBufferSource();
-    source.buffer = audioBuffer;
-    source.connect(audioContext.destination);
-    source.start(nextNoteTime);
-}
-
-function increaseBeat() {
+function beepAndSchedule() {
+    play(audioBuffer, nextNoteTime);
     nextNoteTime += (60 / getTempo());
-    currentBeat = currentBeat === 3 ? 0 : ++currentBeat;
 }
 
 async function initAudio() {
-    if (audioContext)
-        return
-    audioContext = new window.AudioContext();
-    let node = audioContext.createBufferSource();
-    node.buffer = audioContext.createBuffer(1, 1, 22050);;
+    if (!audioContext)
+        audioContext = new window.AudioContext();
+    if (!audioBuffer)
+        audioBuffer = await fetch(beepURL).then(res => res.arrayBuffer()).then(buffer => audioContext.decodeAudioData(buffer));
+    play(audioContext.createBuffer(1, 1, 22050));
+}
+
+function play(buffer, when=0){
+    let node = new AudioBufferSourceNode(audioContext, {'buffer': buffer});
     node.connect(audioContext.destination);
-    node.start(0);
-    audioBuffer =  await fetch('sounds/b.mp3').then(res => res.arrayBuffer()).then(buffer => audioContext.decodeAudioData(buffer));
+    node.start(when);
 }
 
 function startStop() {
-    initAudio();
     let msg = 'stop';
+    let add = 'play';
     if (!isPlaying) {
+        initAudio();
         currentNote = 0;
         nextNoteTime = audioContext.currentTime;
-        msg = 'start';
+        msg = 'play';
+        add = 'stop';
     }
-    timerWorker.postMessage({ 'action': msg });
     isPlaying = !isPlaying;
-    if (isPlaying) {
-        playStop.classList.remove('stopped');
-        playStop.classList.add('playing');
-        playIcon.classList.remove('fa-play');
-        playIcon.classList.add('fa-stop');
-    } else {
-        playStop.classList.remove('playing');
-        playStop.classList.add('stopped');
-        playIcon.classList.remove('fa-stop');
-        playIcon.classList.add('fa-play');
-    }
+    timerWorker.postMessage({'action': msg});
+    playStop.classList.remove(msg);
+    playStop.classList.add(add);
+    playIcon.classList.remove('fa-' + msg);
+    playIcon.classList.add('fa-' + add);
 }
 
 function limitTempo(value) {
@@ -92,10 +81,10 @@ function setTempo(value) {
 
 function taptempo() {
     const now = Date.now() / 1000;
-    if ((now - prevTapTime > 2)) {
+    if (now - prevTapTime > 2) {
         prevTapTime = now;
         avgTap = 0;
-        return
+        return;
     }
     avgTap = (avgTap + (60 / (now - prevTapTime))) / 2;
     prevTapTime = now;
@@ -103,7 +92,7 @@ function taptempo() {
 }
 
 async function fetchSongList() {
-    loadSongList(await (await fetch(listURL)).json());
+    loadSongList(await fetch(listURL).then(res => res.json()));
 }
 
 function loadSongList(songs) {
@@ -131,9 +120,6 @@ function loadCurrentSong() {
 function prevNext(next) {
     currentSong = currentSong + (next ? 1 : -1);
     len = songList.length;
-    if (currentSong === -1)
-        currentSong = len - 1;
-    else if (currentSong === len)
-        currentSong = 0;
+    currentSong = currentSong === len ? 0 : currentSong === -1 ? (len - 1) : currentSong;
     loadCurrentSong();
 }
