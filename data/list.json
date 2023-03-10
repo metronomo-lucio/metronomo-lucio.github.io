@@ -58,5 +58,13 @@
     {
         "name": "La Bolsa",
         "tempo": 165
+    },
+    {
+        "name": "La Mirada del Amo",
+        "tempo": 140
+    },
+    {
+        "name": "Por la ciudad",
+        "tempo": 135
     }
 ]
