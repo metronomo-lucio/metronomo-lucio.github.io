@@ -1,10 +1,10 @@
-let audioBuffer = null;
-let audioContext = null;
-let avgTap = 0.0;
-let currentSong = -1;
+let audioBuffer;
+let audioContext;
+let avgTap;
+let currentSong;
 let isPlaying = false;
-let nextNoteTime = 0.0;
-let prevTapTime = 0.0;
+let nextNoteTime;
+let prevTapTime = 0;
 const maxTempo = 250;
 const minTempo = 50;
 const playIcon = document.getElementById('playIcon');
@@ -37,7 +37,9 @@ async function initAudio() {
     if (!audioContext)
         audioContext = new window.AudioContext();
     if (!audioBuffer)
-        audioBuffer = await fetch('sounds/b.mp3').then(res => res.arrayBuffer()).then(buffer => audioContext.decodeAudioData(buffer));
+        audioBuffer = await fetch('sounds/b.mp3')
+            .then(res => res.arrayBuffer())
+            .then(buffer => audioContext.decodeAudioData(buffer));
     play(audioContext.createBuffer(1, 1, 22050));
 }
 
@@ -52,13 +54,12 @@ function startStop() {
     let add = 'play';
     if (!isPlaying) {
         initAudio();
-        currentNote = 0;
         nextNoteTime = audioContext.currentTime;
         msg = 'play';
         add = 'stop';
     }
     isPlaying = !isPlaying;
-    timerWorker.postMessage({'action': msg});
+    timerWorker.postMessage(msg);
     playStop.classList.remove(msg);
     playStop.classList.add(add);
     playIcon.classList.remove('fa-' + msg);
@@ -95,7 +96,7 @@ function loadSongList() {
         row.insertCell(0).innerText = index + 1;
         row.insertCell(1).innerText = name;
         row.insertCell(2).innerText = tempo;
-        row.onclick = function () {
+        row.onclick = () => {
             currentSong = index;
             loadCurrentSong();
         }
@@ -119,8 +120,6 @@ function prevNext(next) {
     loadCurrentSong();
 }
 
-timerWorker.onmessage = function (e) {
-    schedule();
-};
+timerWorker.onmessage = () => schedule();
 
 loadSongList();

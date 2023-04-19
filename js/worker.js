@@ -1,14 +1,7 @@
-const interval = 25;
-let timerID = null;
-self.onmessage = function(e) {
-	switch (e.data.action) {
-		case 'play':
-			timerID = setInterval(function () {
-				postMessage(0)
-			}, interval)
-			break;
-		case 'stop':
-			clearInterval(timerID);
-			break;
-	}
+let timerID;
+self.onmessage = (e) => {
+	if (e.data === 'play')
+		timerID = setInterval(() => postMessage(null), 25);
+	else
+		clearInterval(timerID);
 }
