@@ -13,50 +13,24 @@ const scheduleAheadTime = 0.1;
 const songName = document.getElementById('songName');
 const songTable = document.getElementById('songsTable');
 const tempo = document.getElementById('tempo');
-const timerWorker = new Worker("js/worker.js");
+const timerWorker = new Worker('js/worker.js');
 const songList = [
-    {
-        "name": "Verte Así",
-        "tempo": 140
-    },
-    {
-        "name": "Que se yo qué hacer",
-        "tempo": 138
-    },
-    {
-        "name": "El Payaso",
-        "tempo": 120
-    },
-    {
-        "name": "Macumba",
-        "tempo": 95
-    },
-    {
-        "name": "Pampa y la Via",
-        "tempo": 156
-    },
-    {
-        "name": "En la Calle",
-        "tempo": 150
-    },
-    {
-        "name": "Bailando al cielo",
-        "tempo": 150
-    },
-    {
-        "name": "Sabor a danza",
-        "tempo": 150
-    }
+    ['Verte Así', 140],
+    ['Que se yo qué hacer', 138],
+    ['El Payaso', 120],
+    ['Macumba', 95],
+    ['Pampa y la Via', 156],
+    ['En la Calle', 150],
+    ['Bailando al cielo', 150],
+    ['Sabor a danza', 150]
 ]
+const songListLength = songList.length;
 
 function schedule() {
-    while (nextNoteTime < audioContext.currentTime + scheduleAheadTime)
-        beepAndSchedule();
-}
-
-function beepAndSchedule() {
-    play(audioBuffer, nextNoteTime);
-    nextNoteTime += (60 / getTempo());
+    while (nextNoteTime < audioContext.currentTime + scheduleAheadTime){
+        play(audioBuffer, nextNoteTime);
+        nextNoteTime += (60 / getTempo());
+    }
 }
 
 async function initAudio() {
@@ -116,11 +90,11 @@ function taptempo() {
 }
 
 function loadSongList() {
-    songList.forEach((song, index) => {
-        let row = songTable.insertRow();
+    songList.forEach(([name, tempo], index) => {
+        const row = songTable.insertRow();
         row.insertCell(0).innerText = index + 1;
-        row.insertCell(1).innerText = song.name;
-        row.insertCell(2).innerText = song.tempo;
+        row.insertCell(1).innerText = name;
+        row.insertCell(2).innerText = tempo;
         row.onclick = function () {
             currentSong = index;
             loadCurrentSong();
@@ -131,15 +105,17 @@ function loadSongList() {
 }
 
 function loadCurrentSong() {
-    let song = songList[currentSong];
-    setTempo(song.tempo);
-    songName.innerText = (currentSong + 1) + ': ' + song.name;
+    let [name, tempo] = songList[currentSong];
+    setTempo(tempo);
+    songName.innerText = (currentSong + 1) + ': ' + name;
 }
 
 function prevNext(next) {
     currentSong = currentSong + (next ? 1 : -1);
-    len = songList.length;
-    currentSong = currentSong === len ? 0 : currentSong === -1 ? (len - 1) : currentSong;
+    if (currentSong === songListLength)
+        currentSong = 0
+    else if (currentSong === -1)
+        currentSong = songListLength - 1
     loadCurrentSong();
 }
 
